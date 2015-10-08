@@ -113,7 +113,7 @@ class Routing
             foreach ($repositories as $dirname => $repos) {
                 $quotedPaths = $quotedPaths + array_map(
                     function ($repo) {
-                        return preg_quote($repo['path'] . "/" . $repo['name'], '#');
+                        return preg_quote($repo['path'], '#');
                     },
                     $repos
                 );
