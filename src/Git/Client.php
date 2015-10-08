@@ -271,7 +271,7 @@ class Client extends BaseClient
         }
 
         $repoTree = array(
-            'name'          => $dir->getPathInfo()->getFilename(),
+            'name'          => (new \SplFileInfo($path))->getFilename(),
             'repositories'  => $repositories,
             'subdirs'       => $subdirs
         );
