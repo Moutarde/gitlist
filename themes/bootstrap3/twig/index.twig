@@ -12,14 +12,14 @@
     <div class="list" class="panel-group" id="accordion" role="tablist">
         {% for dirname, repos in repositories %}
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading[{{ loop.index }}]">
+            <div class="panel-heading" role="tab" id="heading{{ loop.index }}">
                 <h3 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse[{{ loop.index }}]">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ loop.index }}">
                         {{ dirname }}
                     </a>
                 </h3>
             </div>
-            <div id="collapse[{{ loop.index }}]" class="panel-collapse collapse" role="tabpanel">
+            <div id="collapse{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
                 <div class="panel-body">
                     {% for repository in repos %}
                     <div class="repository">
