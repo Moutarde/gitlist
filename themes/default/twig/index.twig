@@ -15,8 +15,8 @@
         {% for repository in repos %}
         <div class="repository">
             <div class="repository-header">
-                <i class="icon-folder-open icon-spaced"></i> <a href="{{ path('repository', {repo: repository.path + '/' + repository.name}) }}"><span class="name">{{ repository.name }}</span></a>
-                <a href="{{ path('rss', {repo: repository.path + '/' + repository.name, branch: 'master'}) }}"><i class="rss pull-right"></i></a>
+                <i class="icon-folder-open icon-spaced"></i> <a href="{{ path('repository', {repo: repository.path}) }}"><span class="name">{{ repository.name }}</span></a>
+                <a href="{{ path('rss', {repo: repository.path, branch: 'master'}) }}"><i class="rss pull-right"></i></a>
             </div>
             <div class="repository-body">
                 {% if repository.description %}
