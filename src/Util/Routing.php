@@ -107,6 +107,8 @@ class Routing
     {
         static $regex = null;
         if ($regex === null) {
+            $quotedPaths = array();
+
             $repositories = $this->app['git']->getRepositories($this->app['git.repos']);
             foreach ($repositories as $dirname => $repos) {
                 $quotedPaths = $quotedPaths + array_map(
