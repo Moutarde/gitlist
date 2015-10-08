@@ -4,24 +4,42 @@
 {% block body %}
 {% include 'navigation.twig' %}
 
-<div class="container">
+<div class="container" id="repositories">
+    <div class="search">
+        <input class="search" placeholder="search" autofocus>
+    </div>
 
-    {% for repository in repositories %}
-    <div class="repository">
-        <div class="repository-header">
-            <span class="fa fa-folder-open"></span>  <a href="{{ path('repository', {repo: repository.name}) }}">{{ repository.name }}</a>
-            <a href="{{ path('rss', {repo: repository.name, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
-        </div>
-        <div class="repository-body">
-            {% if repository.description %}
-            <p>{{ repository.description }}</p>
-            {% else %}
-            <p>There is no repository description file. Please, create one to remove this message.</p>
-            {% endif %}
+    <div class="list" class="panel-group" id="accordion" role="tablist">
+        {% for dirname, repos in repositories %}
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading[{{ loop.index }}]">
+                <h3 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse[{{ loop.index }}]">
+                        {{ dirname }}
+                    </a>
+                </h3>
+            </div>
+            <div id="collapse[{{ loop.index }}]" class="panel-collapse collapse in" role="tabpanel">
+                <div class="panel-body">
+                    {% for repository in repos %}
+                    <div class="repository">
+                        <div class="repository-header">
+                            <span class="fa fa-folder-open"></span>  <a href="{{ path('repository', {repo: repository.path}) }}">{{ repository.name }}</a>
+                            <a href="{{ path('rss', {repo: repository.path, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
+                        </div>
+                        <div class="repository-body">
+                            {% if repository.description %}
+                            <p>{{ repository.description }}</p>
+                            {% else %}
+                            <p>There is no repository description file. Please, create one to remove this message.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
-    {% endfor %}
-
     <hr />
 
     {% include 'footer.twig' %}
