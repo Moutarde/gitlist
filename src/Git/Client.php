@@ -203,7 +203,7 @@ class Client extends BaseClient
             /**
              * Use "+" to preserve keys, only a problem with numeric repos
              */
-            $allRepositories = $allRepositories + $repositories;
+            $allRepositories[$repositories['name']] = $repositories;
         }
 
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
@@ -214,11 +214,12 @@ class Client extends BaseClient
         return $allRepositories;
     }
 
-    private function recurseDirectoryTree($path, $topLevel = true)
+    private function recurseDirectoryTree($path)
     {
         $dir = new \DirectoryIterator($path);
 
         $repositories = array();
+        $subdirs = array();
 
         foreach ($dir as $file) {
             if ($file->isDot()) {
@@ -256,7 +257,7 @@ class Client extends BaseClient
 
                     $repoName = $file->getFilename();
 
-                    $repositories[$file->getPath()][$repoName] = array(
+                    $repositories[] = array(
                         'name' => $repoName,
                         'path' => $file->getPathname(),
                         'description' => $description
@@ -264,12 +265,18 @@ class Client extends BaseClient
 
                     continue;
                 } else {
-                    $repositories = array_merge($repositories, $this->recurseDirectoryTree($file->getPathname(), false));
+                    $subdirs[] = $this->recurseDirectoryTree($file->getPathname());
                 }
             }
         }
 
-        return $repositories;
+        $repoTree = array(
+            'name'          => $dir->getPathInfo()->getFilename(),
+            'repositories'  => $repositories,
+            'subdirs'       => $subdirs
+        );
+
+        return $repoTree;
     }
 }
 

@@ -1,0 +1,33 @@
+<div class="list" class="panel-group" id="accordion" role="tablist">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading{{ dirname }}">
+            <h3 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ dirname }}">
+                    {{ dirname }}
+                </a>
+            </h3>
+        </div>
+        <div id="collapse{{ dirname }}" class="panel-collapse collapse" role="tabpanel">
+            <div class="panel-body">
+                {% for subdir in directory.subdirs %}
+                    {% include 'repo_accordion.twig' with {repositories: subdir} only %}
+                {% endfor %}
+                {% for repository in directory.repositories %}
+                <div class="repository">
+                    <div class="repository-header">
+                        <span class="fa fa-folder-open"></span>  <a href="{{ path('repository', {repo: repository.path}) }}">{{ repository.name }}</a>
+                        <a href="{{ path('rss', {repo: repository.path, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
+                    </div>
+                    <div class="repository-body">
+                        {% if repository.description %}
+                        <p>{{ repository.description }}</p>
+                        {% else %}
+                        <p>There is no repository description file. Please, create one to remove this message.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
