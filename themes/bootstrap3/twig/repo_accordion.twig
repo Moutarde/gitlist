@@ -1,16 +1,16 @@
-<div class="list" class="panel-group" id="accordion" role="tablist">
+<div class="list" class="panel-group" id="accordion{{ parent }}" role="tablist">
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading{{ directory.name }}">
+        <div class="panel-heading" role="tab" id="heading{{ directory.id }}">
             <h3 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ directory.name }}">
+                <a role="button" data-toggle="collapse" data-parent="#accordion{{ parent }}" href="#collapse{{ directory.id }}">
                     {{ directory.name }}
                 </a>
             </h3>
         </div>
-        <div id="collapse{{ directory.name }}" class="panel-collapse collapse" role="tabpanel">
+        <div id="collapse{{ directory.id }}" class="panel-collapse collapse" role="tabpanel">
             <div class="panel-body">
                 {% for subdir in directory.subdirs %}
-                    {% include 'repo_accordion.twig' with {directory: subdir} only %}
+                    {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id} only %}
                 {% endfor %}
                 {% for repository in directory.repositories %}
                 <div class="repository">

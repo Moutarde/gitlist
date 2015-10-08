@@ -10,7 +10,7 @@
     </div>
 
     {% for repo in repositories %}
-        {% include 'repo_accordion.twig' with {directory: repo} only %}
+        {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
     {% endfor %}
     <hr />
 
