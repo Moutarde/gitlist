@@ -96,7 +96,7 @@ class Client extends BaseClient
                         $description = null;
                     }
 
-                    $repoName = $file->getPathname() . '/' . $file->getFilename();
+                    $repoName = $file->getPathname();
 
                     $repositories[$repoName] = array(
                         'name' => $repoName,
