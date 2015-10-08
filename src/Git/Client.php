@@ -106,7 +106,7 @@ class Client extends BaseClient
 
                     continue;
                 } else {
-                    $repositories = array_merge($repositories, $this->recurseDirectory($file->getPathname(), false));
+                    $repositories = $repositories + $this->recurseDirectory($file->getPathname(), false);
                 }
             }
         }
