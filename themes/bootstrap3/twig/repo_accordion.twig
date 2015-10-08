@@ -7,10 +7,10 @@
                 </a>
             </h3>
         </div>
-        <div id="collapse{{ dirname }}" class="panel-collapse collapse" role="tabpanel">
+        <div id="collapse{{ directory.name }}" class="panel-collapse collapse" role="tabpanel">
             <div class="panel-body">
                 {% for subdir in directory.subdirs %}
-                    {% include 'repo_accordion.twig' with {repositories: subdir} only %}
+                    {% include 'repo_accordion.twig' with {directory: subdir} only %}
                 {% endfor %}
                 {% for repository in directory.repositories %}
                 <div class="repository">
