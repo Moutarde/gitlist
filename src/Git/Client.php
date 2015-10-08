@@ -96,9 +96,9 @@ class Client extends BaseClient
                         $description = null;
                     }
 
-                    $repoName = $file->getFilename();
+                    $repoName = $file->getPathname() . '/' . $file->getFilename();
 
-                    $repositories[$file->getPathname()][$repoName] = array(
+                    $repositories[$repoName] = array(
                         'name' => $repoName,
                         'path' => $file->getPathname(),
                         'description' => $description
@@ -106,7 +106,7 @@ class Client extends BaseClient
 
                     continue;
                 } else {
-                    $repositories = $repositories + $this->recurseDirectory($file->getPathname(), false);
+                    $repositories = array_merge($repositories, $this->recurseDirectory($file->getPathname(), false));
                 }
             }
         }
@@ -184,6 +184,92 @@ class Client extends BaseClient
         }
 
         return new Repository($path, $this);
+    }
+
+
+
+
+    public function getRepositoriesTree($paths)
+    {
+        $allRepositories = array();
+
+        foreach ($paths as $path) {
+            $repositories = $this->recurseDirectoryTree($path);
+
+            if (empty($repositories)) {
+                throw new \RuntimeException('There are no GIT repositories in ' . $path);
+            }
+
+            /**
+             * Use "+" to preserve keys, only a problem with numeric repos
+             */
+            $allRepositories = $allRepositories + $repositories;
+        }
+
+        $allRepositories = array_unique($allRepositories, SORT_REGULAR);
+        uksort($allRepositories, function($k1, $k2) {
+            return strtolower($k2)<strtolower($k1);
+        });
+
+        return $allRepositories;
+    }
+
+    private function recurseDirectoryTree($path, $topLevel = true)
+    {
+        $dir = new \DirectoryIterator($path);
+
+        $repositories = array();
+
+        foreach ($dir as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+
+            if (strrpos($file->getFilename(), '.') === 0) {
+                continue;
+            }
+
+            if (!$file->isReadable()) {
+                continue;
+            }
+
+            if ($file->isDir()) {
+                $isBare = file_exists($file->getPathname() . '/HEAD');
+                $isRepository = file_exists($file->getPathname() . '/.git/HEAD');
+
+                if ($isRepository || $isBare) {
+                    if (in_array($file->getPathname(), $this->getHidden())) {
+                        continue;
+                    }
+
+                    if ($isBare) {
+                        $description = $file->getPathname() . '/description';
+                    } else {
+                        $description = $file->getPathname() . '/.git/description';
+                    }
+
+                    if (file_exists($description)) {
+                        $description = file_get_contents($description);
+                    } else {
+                        $description = null;
+                    }
+
+                    $repoName = $file->getFilename();
+
+                    $repositories[$file->getPathname()][$repoName] = array(
+                        'name' => $repoName,
+                        'path' => $file->getPathname(),
+                        'description' => $description
+                    );
+
+                    continue;
+                } else {
+                    $repositories = array_merge($repositories, $this->recurseDirectoryTree($file->getPathname(), false));
+                }
+            }
+        }
+
+        return $repositories;
     }
 }
 

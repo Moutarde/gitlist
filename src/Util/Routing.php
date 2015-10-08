@@ -107,17 +107,12 @@ class Routing
     {
         static $regex = null;
         if ($regex === null) {
-            $quotedPaths = array();
-
-            $repositories = $this->app['git']->getRepositories($this->app['git.repos']);
-            foreach ($repositories as $dirname => $repos) {
-                $quotedPaths = $quotedPaths + array_map(
-                    function ($repo) {
-                        return preg_quote($repo['path'], '#');
-                    },
-                    $repos
-                );
-            }
+            $quotedPaths = array_map(
+                function ($repo) {
+                    return preg_quote($repo['name'], '#');
+                },
+                $this->app['git']->getRepositories($this->app['git.repos'])
+            );
             usort(
                 $quotedPaths,
                 function ($a, $b) {
