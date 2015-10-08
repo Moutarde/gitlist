@@ -96,13 +96,9 @@ class Client extends BaseClient
                         $description = null;
                     }
 
-                    if (!$topLevel) {
-                        $repoName = $file->getPathname() . '/' . $file->getFilename();
-                    } else {
-                        $repoName = $file->getFilename();
-                    }
+                    $repoName = $file->getFilename();
 
-                    $repositories[$repoName] = array(
+                    $repositories[$file->getPathname()][$repoName] = array(
                         'name' => $repoName,
                         'path' => $file->getPathname(),
                         'description' => $description

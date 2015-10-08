@@ -10,7 +10,9 @@
     </div>
 
     <div class="list">
-        {% for repository in repositories %}
+        {% for dirname, repos in repositories %}
+        <h3>{{ dirname }}</h3>
+        {% for repository in repos %}
         <div class="repository">
             <div class="repository-header">
                 <i class="icon-folder-open icon-spaced"></i> <a href="{{ path('repository', {repo: repository.name}) }}"><span class="name">{{ repository.name }}</span></a>
@@ -24,6 +26,7 @@
                 {% endif %}
             </div>
         </div>
+        {% endfor %}
         {% endfor %}
     </div>
 
