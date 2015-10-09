@@ -257,7 +257,7 @@ class Client extends BaseClient
 
                     $repoName = $file->getFilename();
 
-                    $repositories[] = array(
+                    $repositories[$repoName] = array(
                         'name' => $repoName,
                         'path' => $file->getPathname(),
                         'description' => $description
@@ -265,10 +265,20 @@ class Client extends BaseClient
 
                     continue;
                 } else {
-                    $subdirs[] = $this->recurseDirectoryTree($file->getPathname());
+                    $subdirs[$file->getFilename()] = $this->recurseDirectoryTree($file->getPathname());
                 }
             }
         }
+
+        $subdirs = array_unique($subdirs, SORT_REGULAR);
+        uksort($subdirs, function($k1, $k2) {
+            return strtolower($k2)<strtolower($k1);
+        });
+
+        $repositories = array_unique($repositories, SORT_REGULAR);
+        uksort($repositories, function($k1, $k2) {
+            return strtolower($k2)<strtolower($k1);
+        });
 
         $repoTree = array(
             'id'            => str_replace("/", "", $path),
