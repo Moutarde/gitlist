@@ -205,6 +205,10 @@ class Client extends BaseClient
             }
         }
 
+        if (empty($allRepositories)) {
+            throw new \RuntimeException('No git repositories found');
+        }
+
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
         uksort($allRepositories, function($k1, $k2) {
             return strtolower($k2)<strtolower($k1);
@@ -256,7 +260,7 @@ class Client extends BaseClient
 
                     $repoName = $file->getFilename();
 
-                    if ($filter == "" || stristr($repoName, $filter) != FALSE || stristr($description, $filter) != FALSE)
+                    if ($filter == "" || stristr($repoName, $filter) || stristr($description, $filter))
                     {
                         $repositories[$repoName] = array(
                             'name' => $repoName,
