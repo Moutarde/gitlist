@@ -13,11 +13,17 @@
     </form>
     <br />
 
+    {% if repositories %}
     <div class="list panel-group" id="accordion_root" role="tablist">
         {% for repo in repositories %}
             {% include 'repo_accordion.twig' with {directory: repo, parent: 'root', search: search} only %}
         {% endfor %}
     </div>
+    {% else %}
+    <p class="bg-info">
+        No repositories found...
+    </p>
+    {% endif %}
     <hr />
 
     {% include 'footer.twig' %}

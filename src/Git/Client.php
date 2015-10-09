@@ -205,10 +205,6 @@ class Client extends BaseClient
             }
         }
 
-        if (empty($allRepositories)) {
-            throw new \RuntimeException('No git repositories found');
-        }
-
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
         uksort($allRepositories, function($k1, $k2) {
             return strtolower($k2)<strtolower($k1);
