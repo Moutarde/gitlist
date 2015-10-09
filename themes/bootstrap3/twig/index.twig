@@ -9,9 +9,13 @@
         <input class="search" placeholder="search" autofocus>
     </div>
 
-    {% for repo in repositories %}
-        {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
-    {% endfor %}
+    <div class="list" class="panel-group" id="accordion_root" role="tablist">
+        <div class="panel panel-default">
+            {% for repo in repositories %}
+                {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
+            {% endfor %}
+        </div>
+    </div>
     <hr />
 
     {% include 'footer.twig' %}
