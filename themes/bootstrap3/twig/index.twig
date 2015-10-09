@@ -9,7 +9,7 @@
         <input class="search" placeholder="search" autofocus>
     </div>
 
-    <div class="list" class="panel-group" id="accordion_root" role="tablist">
+    <div class="list panel-group" id="accordion_root" role="tablist">
         {% for repo in repositories %}
             {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
         {% endfor %}
