@@ -21,6 +21,13 @@ class MainController implements ControllerProviderInterface
             ));
         })->bind('homepage');
 
+        $route->get('/search/{value}', function($value) use ($app) {
+            $repositories = $app['git']->getRepositoriesTree($app['git.repos']);
+
+            return $app['twig']->render('index.twig', array(
+                'repositories'   => $repositories,
+            ));
+        })->bind('homepage');
 
         $route->get('/refresh', function(Request $request) use ($app ) {
             # Go back to calling page
