@@ -10,11 +10,9 @@
     </div>
 
     <div class="list" class="panel-group" id="accordion_root" role="tablist">
-        <div class="panel panel-default">
-            {% for repo in repositories %}
-                {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
-            {% endfor %}
-        </div>
+        {% for repo in repositories %}
+            {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
+        {% endfor %}
     </div>
     <hr />
 

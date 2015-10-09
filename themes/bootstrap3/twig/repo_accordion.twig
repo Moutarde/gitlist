@@ -1,35 +1,37 @@
-<div class="panel-heading" role="tab" id="heading_{{ directory.id }}">
-    <h3 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion_{{ parent }}" href="#collapse_{{ directory.id }}">
-            {{ directory.name }}
-        </a>
-    </h3>
-</div>
-<div id="collapse_{{ directory.id }}" class="panel-collapse collapse" role="tabpanel">
-    <div class="panel-body">
-        {% if directory.subdirs %}
-        <div class="list" class="panel-group" id="accordion_{{ directory.id }}" role="tablist">
-            <div class="panel panel-default">
-                {% for subdir in directory.subdirs %}
-                    {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id} only %}
-                {% endfor %}
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading_{{ directory.id }}">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion_{{ parent }}" href="#collapse_{{ directory.id }}">
+                {{ directory.name }}
+            </a>
+        </h4>
+    </div>
+    <div id="collapse_{{ directory.id }}" class="panel-collapse collapse" role="tabpanel">
+        <div class="panel-body">
+            {% if directory.subdirs %}
+            <div class="list" class="panel-group" id="accordion_{{ directory.id }}" role="tablist">
+                <div class="panel panel-default">
+                    {% for subdir in directory.subdirs %}
+                        {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id} only %}
+                    {% endfor %}
+                </div>
             </div>
+            {% endif %}
+            {% for repository in directory.repositories %}
+            <div class="repository">
+                <div class="repository-header">
+                    <span class="fa fa-folder-open"></span>  <a href="{{ path('repository', {repo: repository.path}) }}">{{ repository.name }}</a>
+                    <a href="{{ path('rss', {repo: repository.path, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
+                </div>
+                <div class="repository-body">
+                    {% if repository.description %}
+                    <p>{{ repository.description }}</p>
+                    {% else %}
+                    <p>There is no repository description file. Please, create one to remove this message.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endif %}
-        {% for repository in directory.repositories %}
-        <div class="repository">
-            <div class="repository-header">
-                <span class="fa fa-folder-open"></span>  <a href="{{ path('repository', {repo: repository.path}) }}">{{ repository.name }}</a>
-                <a href="{{ path('rss', {repo: repository.path, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
-            </div>
-            <div class="repository-body">
-                {% if repository.description %}
-                <p>{{ repository.description }}</p>
-                {% else %}
-                <p>There is no repository description file. Please, create one to remove this message.</p>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
     </div>
 </div>
