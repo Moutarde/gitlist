@@ -7,6 +7,7 @@
 </div>
 <div id="collapse_{{ directory.id }}" class="panel-collapse collapse" role="tabpanel">
     <div class="panel-body">
+        {% if directory.subdirs %}
         <div class="list" class="panel-group" id="accordion_{{ directory.id }}" role="tablist">
             <div class="panel panel-default">
                 {% for subdir in directory.subdirs %}
@@ -14,6 +15,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
         {% for repository in directory.repositories %}
         <div class="repository">
             <div class="repository-header">
