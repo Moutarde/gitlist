@@ -14,9 +14,9 @@ class MainController implements ControllerProviderInterface
         $route = $app['controllers_factory'];
 
         $route->get('/', function(Request $request) use ($app) {
-            $repositories = $app['git']->getRepositoriesTree($app['git.repos']);
-
             $search = $request->get('search');
+
+            $repositories = $app['git']->getRepositoriesTree($app['git.repos'], $search);
 
             return $app['twig']->render('index.twig', array(
                 'repositories'  => $repositories,

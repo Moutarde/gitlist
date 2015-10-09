@@ -189,21 +189,20 @@ class Client extends BaseClient
 
 
 
-    public function getRepositoriesTree($paths)
+    public function getRepositoriesTree($paths, $filter)
     {
         $allRepositories = array();
 
         foreach ($paths as $path) {
-            $repositories = $this->recurseDirectoryTree($path);
+            $repository = $this->recurseDirectoryTree($path, $filter);
 
-            if (empty($repositories)) {
-                throw new \RuntimeException('There are no GIT repositories in ' . $path);
+            if (!empty($subdir['repositories']) || !empty($subdir['subdirs']))
+            {
+                /**
+                 * Use "+" to preserve keys, only a problem with numeric repos
+                 */
+                $allRepositories[$repository['name']] = $repository;
             }
-
-            /**
-             * Use "+" to preserve keys, only a problem with numeric repos
-             */
-            $allRepositories[$repositories['name']] = $repositories;
         }
 
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
@@ -214,7 +213,7 @@ class Client extends BaseClient
         return $allRepositories;
     }
 
-    private function recurseDirectoryTree($path)
+    private function recurseDirectoryTree($path, $filter)
     {
         $dir = new \DirectoryIterator($path);
 
@@ -257,15 +256,22 @@ class Client extends BaseClient
 
                     $repoName = $file->getFilename();
 
-                    $repositories[$repoName] = array(
-                        'name' => $repoName,
-                        'path' => $file->getPathname(),
-                        'description' => $description
-                    );
+                    if ($filter == "" || stristr($repoName, $filter) || stristr($description, $filter))
+                    {
+                        $repositories[$repoName] = array(
+                            'name' => $repoName,
+                            'path' => $file->getPathname(),
+                            'description' => $description
+                        );
+                    }
 
                     continue;
                 } else {
-                    $subdirs[$file->getFilename()] = $this->recurseDirectoryTree($file->getPathname());
+                    $subdir = $this->recurseDirectoryTree($file->getPathname(), $filter);
+                    if (!empty($subdir['repositories']) || !empty($subdir['subdirs']))
+                    {
+                        $subdirs[$file->getFilename()] = $subdir;
+                    }
                 }
             }
         }
