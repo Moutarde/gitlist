@@ -196,7 +196,7 @@ class Client extends BaseClient
         foreach ($paths as $path) {
             $repository = $this->recurseDirectoryTree($path, $filter);
 
-            if (!empty($subdir['repositories']) || !empty($subdir['subdirs']))
+            if (!empty($repository['repositories']) || !empty($repository['subdirs']))
             {
                 /**
                  * Use "+" to preserve keys, only a problem with numeric repos
@@ -256,7 +256,7 @@ class Client extends BaseClient
 
                     $repoName = $file->getFilename();
 
-                    if ($filter == "" || stristr($repoName, $filter) || stristr($description, $filter))
+                    if ($filter == "" || stristr($repoName, $filter) != FALSE || stristr($description, $filter) != FALSE)
                     {
                         $repositories[$repoName] = array(
                             'name' => $repoName,
