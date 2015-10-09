@@ -10,11 +10,9 @@
         <div class="panel-body">
             {% if directory.subdirs %}
             <div class="list" class="panel-group" id="accordion_{{ directory.id }}" role="tablist">
-                <div class="panel panel-default">
-                    {% for subdir in directory.subdirs %}
-                        {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id} only %}
-                    {% endfor %}
-                </div>
+                {% for subdir in directory.subdirs %}
+                    {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id} only %}
+                {% endfor %}
             </div>
             {% endif %}
             {% for repository in directory.repositories %}
