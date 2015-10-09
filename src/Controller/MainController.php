@@ -28,7 +28,7 @@ class MainController implements ControllerProviderInterface
                 'repositories'   => $repositories,
             ));
         })->value('searchValue', null)
-          ->bind('homepage');
+          ->bind('searchpage');
 
         $route->get('/refresh', function(Request $request) use ($app ) {
             # Go back to calling page
