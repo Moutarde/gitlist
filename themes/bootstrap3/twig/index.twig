@@ -5,9 +5,12 @@
 {% include 'navigation.twig' %}
 
 <div class="container" id="repositories">
-    <div class="search">
-        <input class="search" placeholder="search" autofocus>
-    </div>
+    <form class="form-inline" role="search">
+        <div class="form-group">
+            <input id="search" type="text" class="form-control" placeholder="Search..." autofocus>
+        </div>
+        <button type="submit" class="btn btn-default">Go</button>
+    </form>
 
     <div class="list panel-group" id="accordion_root" role="tablist">
         {% for repo in repositories %}
