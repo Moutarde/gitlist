@@ -15,7 +15,7 @@
 
     <div class="list panel-group" id="accordion_root" role="tablist">
         {% for repo in repositories %}
-            {% include 'repo_accordion.twig' with {directory: repo, parent: 'root'} only %}
+            {% include 'repo_accordion.twig' with {directory: repo, parent: 'root', search: search} only %}
         {% endfor %}
     </div>
     <hr />
