@@ -27,7 +27,7 @@ class Repository extends BaseRepository
     /**
      * Get the current branch, returning a default value when HEAD is detached.
      */
-    public function getHead($default = null)
+    public function getHead($default = NULL)
     {
         $client = $this->getClient();
 
@@ -204,6 +204,8 @@ class Repository extends BaseRepository
      * Show the repository commit log with pagination
      *
      * @access public
+     * @param string $file
+     * @param int page
      * @return array Commit log
      */
     public function getPaginatedCommits($file = null, $page = 0)
@@ -269,6 +271,10 @@ class Repository extends BaseRepository
 
     public function searchTree($query, $branch)
     {
+        if(empty($query)) {
+            return null;
+        }
+
         $query = escapeshellarg($query);
 
         try {
@@ -317,7 +323,7 @@ class Repository extends BaseRepository
         return $data;
     }
 
-    public function getStatistics($branch)
+    public function getStatistics($branch = null)
     {
         // Calculate amount of files, extensions and file size
         $logs = $this->getClient()->run($this, 'ls-tree -r -l ' . $branch);
@@ -344,9 +350,13 @@ class Repository extends BaseRepository
             if (is_numeric($file[3])) {
                 $data['size'] += $file[3];
             }
+        }
 
-            if (($pos = strrpos($file[4], '.')) !== false) {
-                $extension = substr($file[4], $pos);
+        $logs = $this->getClient()->run($this, 'ls-tree -l -r --name-only ' . $branch);
+        $files = explode("\n", $logs);
+        foreach ($files as $file) {
+            if (($pos = strrpos($file, '.')) !== false) {
+                $extension = substr($file, $pos);
 
                 if (($pos = strrpos($extension, '/')) === false) {
                     $data['extensions'][] = $extension;
@@ -379,6 +389,7 @@ class Repository extends BaseRepository
      *
      * @param string $commitish Commitish reference; branch, tag, SHA1, etc.
      * @param string $path      Path whose existence we want to verify.
+     * @return bool
      *
      * GRIPE Arguably belongs in Gitter, as it's generally useful functionality.
      * Also, this really may not be the best way to do this.

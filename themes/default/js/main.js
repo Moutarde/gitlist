@@ -19,11 +19,87 @@ $(function () {
             }
         });
     }
+// blob/master
+
+    var markdownRenderer = new marked.Renderer();
+    markdownRenderer.link = function(href, title, text) {
+        var a;
+        if (href.startsWith('https:/') || href.startsWith('http:/')) {
+            a = '<a target="_blank" href="' + href + '">' + text + '</a>';
+        } else {
+            var start = gitlist.basepath + '/' + gitlist.repo + '/blob/' +  gitlist.branch + '/';
+            if (!location.pathname.startsWith(start)) {
+                href = start + href;
+            }
+            a = '<a href="' + href + '">' + text + '</a>';
+        }
+        return a;
+    }
+
+    markdownRenderer.image = function(href, title, text) {
+        title = title || '';
+        text = text || '';
+        const result = '<span style="display: block; font-size: 125%; opacity: 0.5">' +
+            title +
+            '</span>' +
+            '<img style="max-width: 100%;" src="' + href + '"/>' +
+            '<span style="display: block; text-align: right; opacity: 0.5">' +
+            text +
+            '</span>'
+
+        return result;
+    };
+
+
 
     if ($('#md-content').length) {
-        var converter = new Showdown.converter({extensions: ['table']});
-        $('#md-content').html(converter.makeHtml($('#md-content').text()));
+        var html = marked($('#md-content').text(), {
+            renderer: markdownRenderer
+        });
+        $('#md-content').html(html);
     }
+
+    var clonePopup = $('#clone-popup')
+    var cloneButtonShow = $('#clone-button-show');
+    var cloneButtonHide = $('#clone-button-hide');
+    var cloneButtonSSH = $('#clone-button-ssh');
+    var cloneButtonHTTP = $('#clone-button-http');
+    var cloneInputSSH = $('#clone-input-ssh');
+    var cloneInputHTTP = $('#clone-input-http');
+
+    cloneButtonShow.click(function()
+    {
+        clonePopup.fadeIn();
+    });
+
+    cloneButtonHide.click(function()
+    {
+        clonePopup.fadeOut();
+    });
+
+    cloneButtonSSH.click(function()
+    {
+        if(cloneButtonSSH.hasClass('active'))
+            return;
+
+        cloneButtonSSH.addClass('active');
+        cloneInputSSH.show();
+
+        cloneButtonHTTP.removeClass('active');
+        cloneInputHTTP.hide();
+    });
+
+    cloneButtonHTTP.click(function()
+    {
+        if(cloneButtonHTTP.hasClass('active'))
+            return;
+
+        cloneButtonHTTP.addClass('active');
+        cloneInputHTTP.show();
+
+        cloneButtonSSH.removeClass('active');
+        cloneInputSSH.hide();
+    });
 
     function paginate() {
         var $pager = $('.pager');

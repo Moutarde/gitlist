@@ -20,6 +20,10 @@ class Routing
      *
      * A helper for parsing routes that use commit-ish names and paths
      * separated by /, since route regexes are not enough to get that right.
+     *
+     * @param string $commitishPath
+     * @param string $repo
+     * @return array
      */
     public function parseCommitishPathParam($commitishPath, $repo)
     {
@@ -35,8 +39,10 @@ class Routing
              $slashPosition === 40)) {
             // We may have a commit hash as our commitish.
             $hash = substr($commitishPath, 0, 40);
-            if ($repository->hasCommit($hash)) {
-                $commitish = $hash;
+            if (preg_match('/[^a-zA-Z0-9]/i', $hash) === 0) {
+                if ($repository->hasCommit($hash)) {
+                    $commitish = $hash;
+                }
             }
         }
 
