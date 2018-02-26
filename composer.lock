@@ -112,16 +112,16 @@
         },
         {
             "name": "patrikx3/gitter",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/patrikx3/gitter.git",
-                "reference": "da7d4c9a2cef47fa5f0c9243f72eac79269963e4"
+                "reference": "1ca285d400f50b5aedaee205638af4fd2e9640f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patrikx3/gitter/zipball/da7d4c9a2cef47fa5f0c9243f72eac79269963e4",
-                "reference": "da7d4c9a2cef47fa5f0c9243f72eac79269963e4",
+                "url": "https://api.github.com/repos/patrikx3/gitter/zipball/1ca285d400f50b5aedaee205638af4fd2e9640f0",
+                "reference": "1ca285d400f50b5aedaee205638af4fd2e9640f0",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
             },
             "require-dev": {
                 "mockery/mockery": ">=1",
-                "phpunit/phpunit": "^7",
+                "phpunit/phpunit": ">=7",
                 "symfony/filesystem": ">=4"
             },
             "type": "library",
@@ -158,13 +158,13 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Gitter allows you to interact in an object oriented manner with Git repositories.",
+            "description": "Gitter interacts with Git repositories with the latest version dependencies and PHP.",
             "homepage": "https://github.com/patrikx3/gitter",
             "keywords": [
                 "git",
                 "vcs"
             ],
-            "time": "2018-02-23T15:06:53+00:00"
+            "time": "2018-02-23T17:16:32+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -314,16 +314,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "v2.2.2",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "3fe50331f194c83ded2f824c47c1c24c20877a8c"
+                "reference": "90c80c3e5ef86c54b8769feca0320154c6e63f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/3fe50331f194c83ded2f824c47c1c24c20877a8c",
-                "reference": "3fe50331f194c83ded2f824c47c1c24c20877a8c",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/90c80c3e5ef86c54b8769feca0320154c6e63f7c",
+                "reference": "90c80c3e5ef86c54b8769feca0320154c6e63f7c",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +399,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2018-01-12T07:16:03+00:00"
+            "time": "2018-02-25T11:21:42+00:00"
         },
         {
             "name": "symfony/debug",
@@ -1781,16 +1781,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.0.1",
+            "version": "7.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "316555dbd0ed4097bbdd17c65ab416bf27a472e9"
+                "reference": "e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/316555dbd0ed4097bbdd17c65ab416bf27a472e9",
-                "reference": "316555dbd0ed4097bbdd17c65ab416bf27a472e9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9",
+                "reference": "e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9",
                 "shasum": ""
             },
             "require": {
@@ -1857,7 +1857,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-02-13T06:08:08+00:00"
+            "time": "2018-02-26T07:03:12+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
