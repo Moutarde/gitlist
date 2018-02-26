@@ -115,7 +115,7 @@ class Routing
         if ($regex === null) {
             $quotedPaths = array_map(
                 function ($repo) {
-                    return preg_quote($repo['name'], '#');
+                    return preg_quote($repo['trimed_path'], '#');
                 },
                 $this->app['git']->getRepositories($this->app['git.repos'])
             );

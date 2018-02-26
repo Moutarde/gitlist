@@ -76,10 +76,15 @@
                         <a href="{{ path('tree', {repo: repo, commitishPath: branch ~ '/' ~ path ~ (file.type == "symlink" ? file.path : file.name)}) }}">{{ file.name }}</a>
 
                     {%- elseif file.type == "module"  -%}
-                        <a title="Branch: {{ branch }}" href="{{ file.url }}/tree/{{ branch }}">{{  file.name  }}</a>
-                        @
-                        <a title="Commit: {{ file.hash }}" href="{{ file.url }}/tree/{{ file.hash }}">{{  file.shortHash  }}</a>
-
+                        {%- if file.url matches '/^http.*/' -%}
+                            <a title="Branch: {{ branch }}" href="{{ file.url }}">{{  file.name  }}</a>
+                            @
+                            <a title="Commit: {{ file.hash }}" href="{{ file.url }}/tree/{{ file.hash }}">{{  file.shortHash  }}</a>
+                        {%- else -%}
+                            <a title="Branch: {{ branch }}" href="/{{repo}}/{{ file.url }}">{{  file.name  }}</a>
+                            @
+                            <a title="Commit: {{ file.hash }}" href="/{{repo}}/{{ file.url }}/tree/{{ file.hash }}">{{  file.shortHash  }}</a>
+                        {%- endif -%}
                     {%- else -%}
                          <a href="{{ path('blob', {repo: repo, commitishPath: branch ~ '/' ~ path ~ (file.type == "symlink" ? file.path : file.name)}) }}">{{ file.name }}</a>
 

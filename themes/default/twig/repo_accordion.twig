@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading_{{ directory.id }}">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion_{{ parent }}" href="#collapse_{{ directory.id }}">
+                {{ directory.name }}
+            </a>
+        </h4>
+    </div>
+    <div id="collapse_{{ directory.id }}" class="panel-collapse collapse {{ (search != "" or isFirst == true) ? 'in' : '' }}" role="tabpanel">
+        <div class="panel-body">
+            {% if directory.subdirs %}
+                <div class="panel-group" id="accordion_{{ directory.id }}" role="tablist">
+                    {% for subdir in directory.subdirs %}
+                        {% include 'repo_accordion.twig' with {directory: subdir, parent: directory.id, search: search, isFirst: false} only %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% for repository in directory.repositories %}
+                <div class="repository">
+                    <div class="repository-header">
+                        <i class="fa fa-folder-open"></i>  <a href="{{ path('repository', {repo: repository.trimed_path}) }}"><span class="name">{{ repository.name }}</span></a>
+                        <a href="{{ path('rss', {repo: repository.trimed_path, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
+                    </div>
+                    <div class="repository-body">
+                        {% if repository.description %}
+                            <p>{{ repository.description }}</p>
+                        {% else %}
+                            <p>There is no repository description file. Please, create one to remove this message.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

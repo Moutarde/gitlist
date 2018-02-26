@@ -38,7 +38,7 @@ class Client extends BaseClient
         $allRepositories = array();
 
         foreach ($paths as $path) {
-            $repositories = $this->recurseDirectory($path);
+            $repositories = $this->recurseDirectory($path, $path);
 
             if (empty($repositories)) {
                 throw new \RuntimeException('There are no GIT repositories in ' . $path);
@@ -58,7 +58,7 @@ class Client extends BaseClient
         return $allRepositories;
     }
 
-    private function recurseDirectory($path, $topLevel = true)
+    private function recurseDirectory($path, $rootPath, $topLevel = true)
     {
         $dir = new \DirectoryIterator($path);
 
@@ -98,21 +98,28 @@ class Client extends BaseClient
                         $description = null;
                     }
 
-                    $repoName = $file->getPathname();
+                    if (!$topLevel) {
+                        $repoName = $file->getPathInfo()->getFilename() . '/' . $file->getFilename();
+                    } else {
+                        $repoName = $file->getFilename();
+                    }
 
                     if (is_array($this->getProjects()) && !in_array($repoName, $this->getProjects())) {
                         continue;
                     }
 
-                    $repositories[$repoName] = array(
+                    $trimedPathName = trim(preg_replace('/^'.str_replace('/', '\/', $rootPath).'/', '', $file->getPathname()), '/');
+
+                    $repositories[$trimedPathName] = array(
                         'name' => $repoName,
                         'path' => $file->getPathname(),
+                        'trimed_path' => $trimedPathName,
                         'description' => $description
                     );
 
                     continue;
                 } else {
-                    $repositories = array_merge($repositories, $this->recurseDirectory($file->getPathname(), false));
+                    $repositories = array_merge($repositories, $this->recurseDirectory($file->getPathname(), $rootPath, false));
                 }
             }
         }
@@ -224,7 +231,7 @@ class Client extends BaseClient
         $allRepositories = array();
 
         foreach ($paths as $path) {
-            $repository = $this->recurseDirectoryTree($path, $filter);
+            $repository = $this->recurseDirectoryTree($path, $filter, $path);
 
             if (!empty($repository['repositories']) || !empty($repository['subdirs']))
             {
@@ -243,7 +250,7 @@ class Client extends BaseClient
         return $allRepositories;
     }
 
-    private function recurseDirectoryTree($path, $filter)
+    private function recurseDirectoryTree($path, $filter, $rootPath)
     {
         $dir = new \DirectoryIterator($path);
 
@@ -285,19 +292,21 @@ class Client extends BaseClient
                     }
 
                     $repoName = $file->getFilename();
+                    $trimedPathName = trim(preg_replace('/^'.str_replace('/', '\/', $rootPath).'/', '', $file->getPathname()), '/');
 
                     if ($filter == "" || stristr($repoName, $filter) || stristr($description, $filter))
                     {
                         $repositories[$repoName] = array(
                             'name' => $repoName,
                             'path' => $file->getPathname(),
+                            'trimed_path' => $trimedPathName,
                             'description' => $description
                         );
                     }
 
                     continue;
                 } else {
-                    $subdir = $this->recurseDirectoryTree($file->getPathname(), $filter);
+                    $subdir = $this->recurseDirectoryTree($file->getPathname(), $filter, $rootPath);
                     if (!empty($subdir['repositories']) || !empty($subdir['subdirs']))
                     {
                         $subdirs[$file->getFilename()] = $subdir;

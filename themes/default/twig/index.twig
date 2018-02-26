@@ -5,27 +5,28 @@
 {% include 'navigation.twig' %}
 
 <div class="container" id="repositories">
-    <div class="search form-group">
-        <input class="search form-control" placeholder="Search" autofocus>
-    </div>
+    <form class="form" role="search" action="" method="GET">
+        <div class="input-group">
+            <input name="search" value="{{ search }}" type="text" class="form-control" placeholder="Search..." autofocus>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Go</button>
+            </span>
+        </div>
+    </form>
 
-    <div class="list">
-        {% for repository in repositories %}
-            <div class="repository">
-                <div class="repository-header">
-                    <i class="fa fa-folder-open"></i> <a href="{{ path('repository', {repo: repository.name}) }}"><span class="name">{{ repository.name }}</span></a>
-                    <a href="{{ path('rss', {repo: repository.name, branch: 'master'}) }}"><span class="fa fa-rss rss-icon pull-right"></span></a>
-                </div>
-                <div class="repository-body">
-                    {% if repository.description %}
-                        <p>{{ repository.description }}</p>
-                    {% else %}
-                        <p>There is no repository description file. Please, create one to remove this message.</p>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <br>
+
+    {% if repositories %}
+        <div class="list panel-group" id="accordion_root" role="tablist">
+            {% for repo in repositories %}
+                {% include 'repo_accordion.twig' with {directory: repo, parent: 'root', search: search, isFirst: true} only %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-info">
+            <p>No repositories found...</p>
+        </div>
+    {% endif %}
 
     <hr />
 
